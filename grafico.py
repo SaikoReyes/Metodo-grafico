@@ -1,9 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
+import tkinter as tk
+
 
 restricciones_comp=[]
 restricciones_graph = []
+
+def mostrar_resultado(punto_optimo, valor_optimo):
+    ventana = tk.Tk()
+    ventana.title("Resultado")
+    ventana.geometry("600x400")
+
+    etiqueta = tk.Label(ventana, text="Este es el resultado:", font=("Arial", 18))
+    etiqueta.pack(pady=10)
+
+    etiqueta_punto_optimo = tk.Label(ventana, text=f"Punto óptimo: {punto_optimo}", font=("Arial", 14))
+    etiqueta_punto_optimo.pack(pady=5)
+
+    etiqueta_valor_opt = tk.Label(ventana, text=f"Valor óptimo: {valor_optimo}", font=("Arial", 14))
+    etiqueta_valor_opt.pack(pady=5)
+
+    boton_cerrar = tk.Button(ventana, text="Mostrar grafico", command=ventana.destroy, font=("Arial", 14))
+    boton_cerrar.pack(pady=10)
+
+    ventana.mainloop()
+
 
 
 def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_comp):
@@ -12,7 +34,6 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
     x = np.linspace(xlim[0], xlim[1], 500)
     y = np.linspace(ylim[0], ylim[1], 500)
     X, Y = np.meshgrid(x, y)
-    ligma = 0
 
     fig, ax = plt.subplots()
     #ax.margins(x=0.05, y=0.05)  # Ajusta los márgenes en un 5% del rango de datos
@@ -61,9 +82,7 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
     plt.xlabel('x')
     plt.ylabel('y')
 
-    for restriccion in restricciones_graph:
-        ax.text(0, ylim[1]-ligma, "'x'{restriccion[0]}'+ y'{restriccion[1]}' '{tipo[ligma]}' '{valores[ligma]}", color='blue', fontsize=10, ha='center')
-        ligma = ligma + 1    
+    
     
 
     
@@ -126,8 +145,12 @@ def main():
     print("Valor óptimo: ", -res.fun)
     print("Valor maximizado: ", res.fun)  # Agregar esta línea
 
+    punto_optimo = res.x
+    valor_optimo = -res.fun
+    mostrar_resultado(punto_optimo, valor_optimo)
     graficar_restricciones(tipo, valores, xlim, ylim, res.x, restricciones_comp)
 
 
 if __name__ == "__main__":
     main()
+        
