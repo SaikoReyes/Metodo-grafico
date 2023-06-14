@@ -2,10 +2,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
 import tkinter as tk
-
+from tkinter import ttk
 
 restricciones_comp=[]
 restricciones_graph = []
+
+def ingresar_datos():
+    vnt = tk.Tk()
+    vnt.title("Ingresar datos")
+    vnt.geometry("400x600")
+
+    etiqueta = tk.Label(vnt, text = "¿Cuantas restricciones tienes?", font=("Arial", 18))
+    etiqueta.pack(pady=10)
+    entry = ttk.Entry()
+    entry.place(x=50, y=50)
+
+        
+    button = ttk.Button(text="Obtener texto")
+    button.place(x=50, y=100)
+    
+
+    
+
+    vnt.mainloop()
+    
 
 def mostrar_resultado(punto_optimo, valor_optimo):
     ventana = tk.Tk()
@@ -81,11 +101,6 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
     
     plt.xlabel('x')
     plt.ylabel('y')
-
-    
-    
-
-    
    
     plt.text(solucion[0], solucion[1],solucion)
     # Plot feasible solution point
@@ -99,6 +114,7 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
 
 
 def main():
+    ingresar_datos()
     num_restricciones = int(input("Ingrese el número de restricciones: "))
     restricciones = []
     tipo = []
