@@ -70,8 +70,8 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
     y_center = solucion[1]
 
 
-    ax.set_xlim(x_center - 20, x_center + 20)
-    ax.set_ylim(y_center - 20, y_center + 20)
+    ax.set_xlim(x_center - 50, x_center + 50)
+    ax.set_ylim(y_center - 50, y_center + 50)
     
     plt.xlabel('x')
     plt.ylabel('y')
@@ -88,8 +88,8 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
 
 def solucionador(restricciones, tipo, valores, cont, c, bandera):
  
-    xlim = [-50,50]
-    ylim = [-50,50]
+    xlim = [-100,100]
+    ylim = [-100,100]
 
 
     for ress in restricciones:
