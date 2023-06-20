@@ -8,6 +8,7 @@ from tkinter import messagebox
 restricciones_comp=[]
 restricciones_graph = []
 
+
 def mostrar_resultado(punto_optimo, valor_optimo):
     ventana = tk.Tk()
     ventana.title("Resultado")
@@ -86,7 +87,7 @@ def graficar_restricciones(tipo, valores, xlim, ylim, solucion, restricciones_co
     
     plt.show()
 
-def solucionador(restricciones, tipo, valores, cont, c, bandera):
+def solucionador(restricciones, tipo, valores, cont, c, bandera, bandera2, v):
  
     xlim = [-100,100]
     ylim = [-100,100]
@@ -95,13 +96,22 @@ def solucionador(restricciones, tipo, valores, cont, c, bandera):
     for ress in restricciones:
         ress.pop()
         restricciones_comp.append(ress)
-
-    if bandera:
+    
+    if bandera & bandera2==False:
         for posicion in cont:
             if 0 <= posicion < len(restricciones):
                 subarreglo = restricciones[posicion]
                 restricciones[posicion] = [-x for x in subarreglo]
+    if bandera & bandera2:
+        if v == 2:
+            for posicion in cont:
+                if 0 <= posicion < len(restricciones):
+                    subarreglo = restricciones[posicion]
+                    restricciones[posicion] = [-x for x in subarreglo]
 
+            #restricciones[1] = abs(restricciones[1])
+
+    print(bandera2)
     print(restricciones)
     A = np.array(restricciones)
     b = np.array(valores)
@@ -126,23 +136,37 @@ def obtener_datos():
         valores = []
         cont = []
         bandera = False
+        bandera2 = False
+        
+        v = 0
+        v1 = 0
+        p = 0
         p = 0
 
         for i in range(num_restricciones):
             restriccion = entries_restricciones[i].get()
+            
             coeficientes = list(map(float, restriccion.split()[:5:2]))
             restricciones.append(coeficientes)
             tipo.append(restriccion.split()[3])
             valores.append(float(restriccion.split()[4]))
+            if '-' in restriccion.split()[:5:2]:
+                print("gggggg")
+                bandera2 = True
             for i in range(len(restriccion) - 1):
                 if restriccion[i:i+2] == ">=":
                     bandera = True
                     cont.append(p)
+                
+                
             p += 1
+        print(restriccion)
+        
+        
 
         c = np.array(list(map(float, entry_func_objetivo.get().split(' '))))
         ventana.destroy()
-        solucionador(restricciones, tipo, valores, cont, c, bandera)
+        solucionador(restricciones, tipo, valores, cont, c, bandera, bandera2, v)
 
     except ValueError:
         messagebox.showerror("Error", "Por favor, ingrese datos válidos.")
